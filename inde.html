@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live 3D Point Cloud Scanner</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #050505;
+            font-family: sans-serif;
+        }
+        /* Hidden video element used to capture stream data */
+        #webcam {
+            display: none;
+        }
+        /* UI Overlay instructions */
+        #info {
+            position: absolute;
+            top: 15px;
+            width: 100%;
+            color: #00ffcc;
+            text-align: center;
+            font-size: 14px;
+            letter-spacing: 1px;
+            pointer-events: none;
+            text-shadow: 0 0 5px black;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+    <div id="info">3D POINT CLOUD SCANNER<br>Drag to rotate view | Pinch/Scroll to zoom</div>
+    <video id="webcam" autoplay playsinline></video>
+
+    <script>
+        const video = document.getElementById('webcam');
+        let scene, camera, renderer, particleSystem;
+        const width = 640;
+        const height = 480;
+
+        // 1. Request Camera Access
+        navigator.mediaDevices.getUserMedia({
+            video: {
+                width: width,
+                height: height,
+                facingMode: 'environment' // Uses rear camera on mobile
+            }
+        })
+        .then(stream => {
+            video.srcObject = stream;
+            video.play();
+            // Initialize 3D scene once video stream is ready
+            video.onloadedmetadata = () => {
+                init3D();
+            };
+        })
+        .catch(err => {
+            alert("Camera access required for 3D scanning: " + err.name);
+        });
+
+        function init3D() {
+            // 2. Setup Three.js Scene & Camera
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 400;
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            // 3. Create a Hidden Canvas to Extract Video Pixel Data
+            const videoCanvas = document.createElement('canvas');
+            videoCanvas.width = 160; // Downsampled grid size for smooth performance
+            videoCanvas.height = 120;
+            const videoContext = videoCanvas.getContext('2d');
+
+            // 4. Generate the 3D Particle Grid Geometry
+            const geometry = new THREE.BufferGeometry();
+            const numParticles = videoCanvas.width * videoCanvas.height;
+            const positions = new Float32Array(numParticles * 3);
+            const colors = new Float32Array(numParticles * 3);
+
+            let index = 0;
+            for (let y = 0; y < videoCanvas.height; y++) {
+                for (let x = 0; x < videoCanvas.width; x++) {
+                    // Center the grid coordinates around (0,0)
+                    positions[index * 3] = x - videoCanvas.width / 2;
+                    positions[index * 3 + 1] = -(y - videoCanvas.height / 2);
+                    positions[index * 3 + 2] = 0; // Initial depth (Z) is flat
+                    index++;
+                }
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            // 5. Particle Styling (Glow effect points)
+            const material = new THREE.PointsMaterial({
+                size: 2,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.85
+            });
+
+            particleSystem = new THREE.Points(geometry, material);
+            // Scale up the grid so it fills the screen nicely
+            particleSystem.scale.set(3.5, 3.5, 3.5);
+            scene.add(particleSystem);
+
+            // 6. Interactive Touch/Mouse Controls for Rotation
+            let isDragging = false;
+            let previousMousePosition = { x: 0, y: 0 };
+
+            const handleStart = (x, y) => {
+                isDragging = true;
+                previousMousePosition = { x, y };
+            };
+
+            const handleMove = (x, y) => {
+                if (!isDragging) return;
+                const deltaX = x - previousMousePosition.x;
+                const deltaY = y - previousMousePosition.y;
+
+                particleSystem.rotation.y += deltaX * 0.005;
+                particleSystem.rotation.x += deltaY * 0.005;
+
+                previousMousePosition = { x, y };
+            };
+
+            window.addEventListener('mousedown', (e) => handleStart(e.clientX, e.clientY));
+            window.addEventListener('mousemove', (e) => handleMove(e.clientX, e.clientY));
+            window.addEventListener('mouseup', () => isDragging = false);
+
+            window.addEventListener('touchstart', (e) => handleStart(e.touches.clientX, e.touches.clientY));
+            window.addEventListener('touchmove', (e) => handleMove(e.touches.clientX, e.touches.clientY));
+            window.addEventListener('touchend', () => isDragging = false);
+
+            // Handle Screen Resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            // 7. Live Scan/Animation Loop
+            function animate() {
+                requestAnimationFrame(animate);
+
+                if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                    // Draw current video frame to hidden canvas
+                    videoContext.drawImage(video, 0, 0, videoCanvas.width, videoCanvas.height);
+                    const imgData = videoContext.getImageData(0, 0, videoCanvas.width, videoCanvas.height).data;
+
+                    const posAttr = geometry.attributes.position;
+                    const colorAttr = geometry.attributes.color;
+
+                    let idx = 0;
+                    for (let i = 0; i < imgData.length; i += 4) {
+                        const r = imgData[i];
+                        const g = imgData[i + 1];
+                        const b = imgData[i + 2];
+
+                        // Calculate brightness value (0 to 255)
+                        const brightness = (r + g + b) / 3;
+
+                        // Map brightness directly to Z-depth to create a 3D structure
+                        // Brighter areas pull forward, creating contour dimensions
+                        posAttr.array[idx * 3 + 2] = (brightness * 0.3);
+
+                        // Assign matching matrix-style colors to the structure
+                        colorAttr.array[idx * 3] = r / 255;
+                        colorAttr.array[idx * 3 + 1] = g / 255;
+                        colorAttr.array[idx * 3 + 2] = b / 255;
+
+                        idx++;
+                    }
+
+                    posAttr.needsUpdate = true;
+                    colorAttr.needsUpdate = true;
+                }
+
+                renderer.render(scene, camera);
+            }
+
+            animate();
+        }
+    </script>
+</body>
+</html>
