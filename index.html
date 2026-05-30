@@ -1,0 +1,1971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>GrandPal · Home & Heritage Companion</title>
+ 
+ <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+ <style>
+ * {
+ box-sizing: border-box;
+ margin: 0;
+ padding: 0;
+ }
+
+ :define-colors {
+   --color-cozy-bg: #fbf9f5;
+   --color-card-bg: #ffffff;
+   --color-text-dark: #2d1a11;
+   --color-text-muted: #6e5c53;
+   --color-warm-orange: #d96d55;
+   --color-warm-orange-hover: #be533c;
+   --color-sage: #6b8c70;
+   --color-sage-hover: #507055;
+   --color-cream-light: #f7ece1;
+   --color-gold-soft: #f2c94c;
+   --color-terracotta: #ab4e3d;
+ }
+
+ :root {
+   --color-cozy-bg: #fbf9f5;
+   --color-card-bg: #ffffff;
+   --color-text-dark: #2d1a11;
+   --color-text-muted: #6e5c53;
+   --color-warm-orange: #d96d55;
+   --color-warm-orange-hover: #be533c;
+   --color-sage: #6b8c70;
+   --color-sage-hover: #507055;
+   --color-cream-light: #f7ece1;
+   --color-gold-soft: #f2c94c;
+   --color-terracotta: #ab4e3d;
+   --font-serif: 'Merriweather', Georgia, serif;
+   --font-sans: 'Nunito', 'Segoe UI', sans-serif;
+ }
+
+ body {
+ font-family: var(--font-sans);
+ background: var(--color-cozy-bg);
+ color: var(--color-text-dark);
+ min-height: 100vh;
+ display: flex;
+ flex-direction: column;
+ padding-bottom: 90px;
+ overflow-x: hidden;
+ transition: background-color 0.5s ease, color 0.5s ease;
+ }
+
+ body.cabin-theme {
+   --color-cozy-bg: #2d1a11;
+   --color-card-bg: #3d281e;
+   --color-text-dark: #fbf9f5;
+   --color-text-muted: #cdb6ab;
+   --color-cream-light: #4d3529;
+   background: var(--color-cozy-bg);
+   color: var(--color-text-dark);
+ }
+
+ header {
+ background: linear-gradient(135deg, #fceddb 0%, #f4d9c6 100%);
+ padding: 1.5rem 2.5rem;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ gap: 2rem;
+ box-shadow: 0 4px 20px rgba(45, 26, 17, 0.08);
+ position: sticky;
+ top: 0;
+ z-index: 100;
+ border-bottom: 3px solid var(--color-cream-light);
+ }
+
+ .header-left {
+ display: flex;
+ align-items: center;
+ gap: 1.25rem;
+ }
+
+ h1 {
+ font-family: var(--font-serif);
+ font-size: 2.2rem;
+ font-weight: 900;
+ letter-spacing: -0.5px;
+ color: #2d1a11;
+ display: flex;
+ align-items: center;
+ gap: 12px;
+ }
+
+ .header-icon {
+   width: 36px;
+   height: 36px;
+   fill: var(--color-terracotta);
+ }
+
+ .premium-badge {
+ background: var(--color-terracotta);
+ color: #ffffff;
+ font-size: 0.8rem;
+ font-weight: 800;
+ padding: 0.4rem 1rem;
+ border-radius: 30px;
+ text-transform: uppercase;
+ letter-spacing: 1px;
+ display: none;
+ box-shadow: 0 2px 8px rgba(171, 78, 61, 0.25);
+ }
+
+ .header-right {
+ display: flex;
+ align-items: center;
+ gap: 1rem;
+ flex-wrap: wrap;
+ }
+
+ .nav-btn {
+ font-size: 0.95rem;
+ font-weight: 700;
+ padding: 0.75rem 1.5rem;
+ border-radius: 40px;
+ cursor: pointer;
+ border: none;
+ transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+ display: flex;
+ align-items: center;
+ gap: 0.6rem;
+ font-family: var(--font-sans);
+ }
+
+ .premium-btn {
+ background: var(--color-terracotta);
+ color: #ffffff;
+ box-shadow: 0 4px 12px rgba(171, 78, 61, 0.2);
+ }
+
+ .premium-btn:hover {
+ background: var(--color-text-dark);
+ transform: translateY(-2px);
+ box-shadow: 0 6px 16px rgba(45, 26, 17, 0.3);
+ }
+
+ .voice-assist-btn {
+ font-size: 1.1rem;
+ font-weight: 700;
+ padding: 0.9rem 2.2rem;
+ background: #ffffff;
+ border: 2.5px solid var(--color-cream-light);
+ border-radius: 60px;
+ cursor: pointer;
+ box-shadow: 0 4px 15px rgba(45, 26, 17, 0.05);
+ transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+ color: #2d1a11;
+ display: flex;
+ align-items: center;
+ gap: 0.6rem;
+ }
+
+ .voice-assist-btn:hover {
+ background: var(--color-cream-light);
+ transform: translateY(-3px);
+ box-shadow: 0 8px 22px rgba(45, 26, 17, 0.1);
+ }
+
+ .voice-assist-btn.recording {
+ background: var(--color-warm-orange);
+ color: white;
+ border-color: var(--color-warm-orange);
+ animation: gentle-pulse 1.8s infinite;
+ }
+
+ @keyframes gentle-pulse {
+ 0% { box-shadow: 0 0 0 0 rgba(217,109,85,0.6); }
+ 70% { box-shadow: 0 0 0 22px rgba(217,109,85,0); }
+ 100% { box-shadow: 0 0 0 0 rgba(217,109,85,0); }
+ }
+
+ .main-content {
+ flex: 1;
+ max-width: 900px;
+ margin: 3rem auto;
+ padding: 0 1.5rem;
+ width: 100%;
+ display: flex;
+ flex-direction: column;
+ gap: 2.5rem;
+ }
+
+ .tagline {
+ font-family: var(--font-serif);
+ font-size: 2.4rem;
+ font-weight: 800;
+ color: var(--color-text-dark);
+ text-align: center;
+ margin-bottom: 0.5rem;
+ letter-spacing: -0.5px;
+ line-height: 1.3;
+ }
+
+ .app-card {
+ background: var(--color-card-bg);
+ border-radius: 28px;
+ border: 1px solid rgba(110, 92, 83, 0.12);
+ box-shadow: 0 10px 30px rgba(45, 26, 17, 0.04);
+ transition: all 0.3s ease;
+ }
+
+ .location-card {
+ padding: 1.8rem 2.4rem;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ gap: 1.5rem;
+ flex-wrap: wrap;
+ }
+
+ .location-label {
+ font-size: 1.2rem;
+ font-weight: 700;
+ color: var(--color-text-dark);
+ display: flex;
+ align-items: center;
+ gap: 0.75rem;
+ }
+
+ .location-select, .ar-mode-select {
+ font-size: 1.1rem;
+ font-weight: 700;
+ padding: 0.75rem 1.5rem;
+ border-radius: 16px;
+ border: 2.5px solid var(--color-cream-light);
+ background-color: var(--color-cozy-bg);
+ color: var(--color-text-dark);
+ cursor: pointer;
+ outline: none;
+ transition: all 0.3s ease;
+ font-family: var(--font-sans);
+ }
+
+ .location-select { min-width: 250px; }
+ .ar-mode-select { width: 100%; margin-top: 0.5rem; }
+
+ .location-select:focus, .ar-mode-select:focus {
+ border-color: var(--color-warm-orange);
+ box-shadow: 0 0 12px rgba(217, 109, 85, 0.2);
+ }
+
+ .usage-tracker {
+ text-align: right;
+ font-size: 1.05rem;
+ font-weight: 700;
+ color: var(--color-text-muted);
+ padding-right: 0.5rem;
+ margin-top: -1rem;
+ }
+
+ .ar-card {
+ background: linear-gradient(135deg, #f7ece1 0%, #edd8c5 100%);
+ border: 1.5px solid rgba(171, 78, 61, 0.15);
+ color: #2d1a11;
+ border-radius: 28px;
+ padding: 2.2rem 2.6rem;
+ box-shadow: 0 12px 28px rgba(45, 26, 17, 0.04);
+ display: flex;
+ flex-direction: column;
+ gap: 1.5rem;
+ }
+
+ .ar-card-header {
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ gap: 1.5rem;
+ flex-wrap: wrap;
+ }
+
+ .ar-info h4 {
+ font-family: var(--font-serif);
+ font-size: 1.6rem;
+ font-weight: 800;
+ margin-bottom: 0.5rem;
+ color: var(--color-terracotta);
+ }
+
+ .ar-info p {
+ font-size: 1.1rem;
+ color: var(--color-text-muted);
+ line-height: 1.6;
+ }
+
+ .ar-launch-btn {
+ background: var(--color-terracotta);
+ color: #ffffff;
+ font-weight: 800;
+ font-size: 1.1rem;
+ padding: 1rem 2.2rem;
+ border: none;
+ border-radius: 50px;
+ cursor: pointer;
+ box-shadow: 0 4px 15px rgba(171, 78, 61, 0.3);
+ transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.25);
+ white-space: nowrap;
+ font-family: var(--font-sans);
+ }
+
+ .ar-launch-btn:hover {
+ background: var(--color-text-dark);
+ transform: scale(1.03);
+ box-shadow: 0 8px 22px rgba(45, 26, 17, 0.2);
+ }
+
+ #arViewOverlay {
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100vw;
+ height: 100vh;
+ z-index: 9999;
+ display: none;
+ background: #000000;
+ }
+
+ .close-ar-btn {
+ position: absolute;
+ top: 20px;
+ left: 20px;
+ z-index: 10005;
+ background: #ffffff;
+ color: var(--color-text-dark);
+ border: none;
+ font-weight: 800;
+ padding: 0.9rem 1.8rem;
+ border-radius: 30px;
+ cursor: pointer;
+ box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+ font-size: 1rem;
+ transition: all 0.2s ease;
+ font-family: var(--font-sans);
+ }
+
+ .close-ar-btn:hover {
+     transform: scale(1.05);
+     background: #faf6f0;
+ }
+
+ .modal-overlay {
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ background: rgba(45, 26, 17, 0.7);
+ backdrop-filter: blur(8px);
+ display: none;
+ align-items: center;
+ justify-content: center;
+ z-index: 10000;
+ }
+
+ .modal-card {
+ background: var(--color-card-bg);
+ border: 1px solid rgba(110,92,83,0.15);
+ max-width: 520px;
+ width: 90%;
+ border-radius: 32px;
+ padding: 3rem;
+ box-shadow: 0 20px 50px rgba(45,26,17,0.15);
+ position: relative;
+ animation: slideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+ max-height: 90vh;
+ overflow-y: auto;
+ }
+
+ @keyframes slideUp {
+ from { opacity: 0; transform: translateY(40px); }
+ to { opacity: 1; transform: translateY(0); }
+ }
+
+ .close-modal {
+ position: absolute;
+ top: 1.5rem;
+ right: 1.5rem;
+ background: var(--color-cream-light);
+ border: none;
+ width: 40px;
+ height: 40px;
+ border-radius: 50%;
+ font-size: 1.5rem;
+ font-weight: bold;
+ cursor: pointer;
+ color: var(--color-text-dark);
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ transition: all 0.2s;
+ }
+
+ .close-modal:hover {
+     background: #edd8c5;
+     transform: scale(1.08);
+ }
+
+ .modal-card h2, .modal-card h3 {
+     font-family: var(--font-serif);
+     color: var(--color-text-dark);
+     font-weight: 800;
+     letter-spacing: -0.5px;
+ }
+
+ .modal-card p {
+     color: var(--color-text-muted);
+     line-height: 1.6;
+ }
+
+ .form-group {
+ margin-bottom: 1.5rem;
+ }
+
+ .form-group label {
+ display: block;
+ font-size: 1rem;
+ font-weight: 700;
+ color: var(--color-text-dark);
+ margin-bottom: 0.6rem;
+ }
+
+ .form-group input, .form-group select {
+ width: 100%;
+ padding: 1rem 1.25rem;
+ font-size: 1.1rem;
+ border: 2px solid var(--color-cream-light);
+ border-radius: 16px;
+ background: var(--color-cozy-bg);
+ color: var(--color-text-dark);
+ outline: none;
+ transition: all 0.3s ease;
+ font-family: var(--font-sans);
+ }
+
+ .form-group input:focus, .form-group select:focus {
+ border-color: var(--color-warm-orange);
+ box-shadow: 0 0 12px rgba(217, 109, 85, 0.15);
+ background: #ffffff;
+ }
+
+ .submit-btn {
+ width: 100%;
+ background: var(--color-warm-orange);
+ color: white;
+ font-weight: 700;
+ font-size: 1.2rem;
+ padding: 1.1rem;
+ border: none;
+ border-radius: 60px;
+ cursor: pointer;
+ margin-top: 1rem;
+ transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+ box-shadow: 0 6px 20px rgba(217, 109, 85, 0.25);
+ font-family: var(--font-sans);
+ }
+
+ .submit-btn:hover {
+     background: var(--color-warm-orange-hover);
+     transform: translateY(-2px);
+     box-shadow: 0 10px 25px rgba(217, 109, 85, 0.4);
+ }
+ 
+ .pay-submit-btn {
+     background: var(--color-sage);
+     box-shadow: 0 6px 20px rgba(107, 140, 112, 0.25);
+ }
+ .pay-submit-btn:hover {
+     background: var(--color-sage-hover);
+     box-shadow: 0 10px 25px rgba(107, 140, 112, 0.4);
+ }
+
+ .status-card {
+ background: var(--color-card-bg);
+ border-radius: 28px;
+ padding: 2.2rem;
+ border: 1px solid rgba(110, 92, 83, 0.12);
+ box-shadow: 0 10px 30px rgba(45, 26, 17, 0.04);
+ display: flex;
+ flex-direction: column;
+ gap: 1rem;
+ }
+
+ #aiStatus {
+     font-family: var(--font-serif);
+     font-size: 1.4rem;
+     font-weight: 800;
+     color: var(--color-text-dark);
+     letter-spacing: -0.3px;
+     display: flex;
+     align-items: center;
+     gap: 10px;
+ }
+ 
+ .ai-response-text {
+     display: block;
+     font-size: 1.25rem;
+     background: var(--color-cozy-bg);
+     border-left: 5px solid var(--color-warm-orange);
+     padding: 1.5rem;
+     border-radius: 0 20px 20px 0;
+     margin-top: 0.5rem;
+     font-style: italic;
+     line-height: 1.7;
+     color: var(--color-text-dark);
+     box-shadow: inset 0 2px 8px rgba(45,26,17,0.02);
+ }
+
+ .caregiver-section {
+     max-width: 800px;
+     margin: 2rem auto;
+     padding: 2.5rem;
+     background: var(--color-card-bg);
+     border-radius: 28px;
+     border: 1px solid rgba(110, 92, 83, 0.12);
+     box-shadow: 0 10px 30px rgba(45, 26, 17, 0.04);
+ }
+ .caregiver-section h2 {
+     font-family: var(--font-serif);
+     font-size: 1.8rem;
+     font-weight: 800;
+     margin-bottom: 0.5rem;
+     color: var(--color-text-dark);
+ }
+ .caregiver-section p {
+     color: var(--color-text-muted);
+     margin-bottom: 1.5rem;
+     font-size: 1.05rem;
+     line-height: 1.6;
+ }
+ .caregiver-section textarea {
+     width: 100%;
+     height: 140px;
+     padding: 1.25rem;
+     border: 2px solid var(--color-cream-light);
+     border-radius: 20px;
+     margin-bottom: 1rem;
+     background: var(--color-cozy-bg);
+     color: var(--color-text-dark);
+     font-size: 1.1rem;
+     font-family: var(--font-sans);
+     outline: none;
+     transition: all 0.3s;
+     resize: none;
+ }
+ .caregiver-section textarea:focus {
+     border-color: var(--color-warm-orange);
+     box-shadow: 0 0 15px rgba(217, 109, 85, 0.15);
+ }
+ 
+ footer {
+     text-align: center;
+     padding: 1.5rem;
+     background: #f7ece1;
+     position: fixed;
+     bottom: 0;
+     width: 100%;
+     font-weight: 700;
+     font-size: 1rem;
+     color: var(--color-text-muted);
+     border-top: 1px solid rgba(110, 92, 83, 0.08);
+     z-index: 50;
+ }
+
+ .culture-nav-btn {
+     background: #ffffff;
+     color: var(--color-terracotta);
+     border: 2px solid var(--color-cream-light);
+     box-shadow: 0 4px 15px rgba(171, 78, 61, 0.1);
+     margin-right: 10px;
+ }
+ .culture-nav-btn:hover {
+     background: var(--color-cream-light);
+     transform: translateY(-2px);
+     box-shadow: 0 8px 20px rgba(171, 78, 61, 0.2);
+ }
+
+ .onboarding-step { display: none; }
+ .onboarding-step.active { display: block; animation: slideUp 0.3s ease; }
+ 
+ .hobby-grid {
+     display: flex;
+     flex-wrap: wrap;
+     gap: 0.75rem;
+     margin: 1.5rem 0;
+ }
+ .hobby-tag {
+     padding: 0.65rem 1.25rem;
+     background: var(--color-cozy-bg);
+     border: 2px solid var(--color-cream-light);
+     border-radius: 30px;
+     cursor: pointer;
+     font-weight: 700;
+     font-size: 1rem;
+     transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+     color: var(--color-text-dark);
+ }
+ .hobby-tag:hover {
+     background: var(--color-cream-light);
+     border-color: #edd8c5;
+     transform: translateY(-1px);
+ }
+ .hobby-tag.selected {
+     background: var(--color-sage);
+     color: white;
+     border-color: var(--color-sage);
+     box-shadow: 0 4px 12px rgba(107, 140, 112, 0.3);
+ }
+ .onboarding-controls {
+     display: flex;
+     justify-content: space-between;
+     margin-top: 2.5rem;
+     gap: 1rem;
+ }
+ .btn-secondary {
+     background: #ffffff;
+     color: var(--color-text-dark);
+     padding: 0.9rem 1.8rem;
+     border: 2px solid var(--color-cream-light);
+     border-radius: 40px;
+     cursor: pointer;
+     font-weight: 700;
+     transition: all 0.2s ease;
+ }
+ .btn-secondary:hover {
+     background: var(--color-cozy-bg);
+     transform: translateY(-1px);
+ }
+
+ #culturalMapScreen {
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100vw;
+     height: 100vh;
+     background: #edd8c5 url('https://www.transparenttextures.com/patterns/cream-paper.png');
+     z-index: 900;
+     display: none;
+ }
+ .close-map-btn {
+     position: absolute;
+     top: 25px;
+     right: 25px;
+     z-index: 905;
+     background: #ffffff;
+     color: var(--color-text-dark);
+     border: 2px solid var(--color-cream-light);
+     backdrop-filter: blur(10px);
+     font-weight: 800;
+     padding: 0.8rem 1.5rem;
+     border-radius: 30px;
+     box-shadow: 0 4px 15px rgba(45, 26, 17, 0.1);
+     cursor: pointer;
+     transition: all 0.2s ease;
+ }
+ .close-map-btn:hover {
+     background: var(--color-cozy-bg);
+     transform: scale(1.05);
+ }
+ .floating-pin {
+     position: absolute;
+     font-size: 1.1rem;
+     font-weight: 800;
+     color: var(--color-text-dark);
+     background: #ffffff;
+     padding: 0.75rem 1.25rem;
+     border-radius: 30px;
+     border: 2px solid var(--color-terracotta);
+     cursor: pointer;
+     animation: floatPin 2.5s infinite ease-in-out;
+     box-shadow: 0 8px 20px rgba(45, 26, 17, 0.15);
+     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.25);
+ }
+ .floating-pin:hover {
+     transform: scale(1.1);
+     background: var(--color-cream-light);
+     box-shadow: 0 12px 28px rgba(45, 26, 17, 0.25);
+ }
+ .pin-china { top: 38%; left: 62%; }
+ .pin-italy { top: 32%; left: 46%; }
+ .pin-mexico { top: 48%; left: 24%; }
+ .pin-india { top: 44%; left: 56%; }
+ .pin-nigeria { top: 52%; left: 44%; }
+ .pin-japan { top: 36%; left: 68%; }
+
+ @keyframes floatPin {
+     0% { transform: translateY(0); }
+     50% { transform: translateY(-15px); }
+     100% { transform: translateY(0); }
+ }
+
+ .cultural-drawer {
+     position: fixed;
+     bottom: -100%;
+     left: 0;
+     width: 100%;
+     height: 78vh;
+     background: var(--color-cozy-bg);
+     border-radius: 36px 36px 0 0;
+     box-shadow: 0 -15px 50px rgba(45,26,17,0.15);
+     transition: bottom 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+     z-index: 950;
+     padding: 2.5rem;
+     overflow-y: auto;
+     border-top: 3px solid var(--color-cream-light);
+ }
+ .cultural-drawer.open { bottom: 0; }
+ .drawer-header {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     margin-bottom: 2rem;
+     padding-bottom: 1rem;
+     border-bottom: 1.5px solid rgba(110, 92, 83, 0.1);
+ }
+ .drawer-header h2 {
+     font-family: var(--font-serif);
+     font-size: 2.2rem;
+     color: var(--color-text-dark);
+     display: flex;
+     align-items: center;
+     gap: 0.75rem;
+     font-weight: 800;
+     letter-spacing: -0.7px;
+ }
+ 
+ .ambassador-section {
+     background: var(--color-card-bg);
+     border-radius: 24px;
+     padding: 2rem;
+     border: 1px solid rgba(110, 92, 83, 0.12);
+     margin-bottom: 2.5rem;
+     box-shadow: 0 8px 25px rgba(0,0,0,0.02);
+ }
+ .chat-window {
+     max-height: 280px;
+     overflow-y: auto;
+     margin-bottom: 1.5rem;
+     display: flex;
+     flex-direction: column;
+     gap: 1.25rem;
+     padding-right: 0.5rem;
+ }
+ .chat-msg {
+     padding: 1rem 1.4rem;
+     border-radius: 20px;
+     font-size: 1.1rem;
+     line-height: 1.5;
+     max-width: 80%;
+     box-shadow: 0 4px 12px rgba(45, 26, 17, 0.05);
+ }
+ .msg-ai {
+     background: var(--color-cozy-bg);
+     border-left: 5px solid var(--color-terracotta);
+     color: var(--color-text-dark);
+     align-self: flex-start;
+ }
+ .msg-user {
+     background: var(--color-terracotta);
+     color: white;
+     align-self: flex-end;
+ }
+ .chat-input-area { display: flex; gap: 0.75rem; }
+ .chat-input-area input {
+     flex: 1;
+     padding: 1rem 1.5rem;
+     border-radius: 30px;
+     border: 2px solid var(--color-cream-light);
+     background: var(--color-cozy-bg);
+     color: var(--color-text-dark);
+     font-size: 1.1rem;
+     outline: none;
+     transition: all 0.3s;
+ }
+ .chat-input-area input:focus {
+     border-color: var(--color-terracotta);
+     box-shadow: 0 0 12px rgba(171, 78, 61, 0.15);
+ }
+ .chat-input-area button {
+     background: var(--color-terracotta);
+     color: white;
+     border: none;
+     padding: 0 2rem;
+     border-radius: 30px;
+     cursor: pointer;
+     font-weight: 700;
+     font-size: 1.1rem;
+     box-shadow: 0 4px 15px rgba(171, 78, 61, 0.2);
+     transition: all 0.2s ease;
+     font-family: var(--font-sans);
+ }
+ .chat-input-area button:hover {
+     background: var(--color-text-dark);
+     transform: translateY(-1px);
+ }
+
+ .community-section h3 {
+     font-family: var(--font-serif);
+     font-size: 1.5rem;
+     margin-bottom: 1.25rem;
+     color: var(--color-text-dark);
+     font-weight: 800;
+     letter-spacing: -0.3px;
+ }
+ .community-scroll {
+     display: flex;
+     gap: 1.25rem;
+     overflow-x: auto;
+     padding-bottom: 1.25rem;
+     scrollbar-width: thin;
+ }
+ .user-card {
+     min-width: 250px;
+     background: var(--color-card-bg);
+     border: 1px solid rgba(110, 92, 83, 0.12);
+     border-radius: 24px;
+     padding: 1.5rem;
+     box-shadow: 0 6px 20px rgba(45, 26, 17, 0.02);
+     display: flex;
+     flex-direction: column;
+     gap: 0.75rem;
+     transition: all 0.25s ease;
+ }
+ .user-card:hover {
+     transform: translateY(-4px);
+     border-color: rgba(110, 92, 83, 0.25);
+     box-shadow: 0 10px 25px rgba(45, 26, 17, 0.08);
+ }
+ .user-card .badge {
+     display: inline-block;
+     padding: 0.3rem 0.8rem;
+     border-radius: 12px;
+     font-size: 0.8rem;
+     font-weight: 800;
+     background: var(--color-cream-light);
+     color: var(--color-terracotta);
+     width: max-content;
+     border: 1px solid rgba(171, 78, 61, 0.15);
+     letter-spacing: 0.5px;
+     text-transform: uppercase;
+ }
+ .user-card .hobbies {
+     font-size: 0.95rem;
+     color: var(--color-text-muted);
+     line-height: 1.4;
+ }
+ .user-card button {
+     margin-top: auto;
+     background: var(--color-cozy-bg);
+     color: var(--color-terracotta);
+     border: 1.5px solid rgba(171, 78, 61, 0.2);
+     padding: 0.75rem;
+     border-radius: 16px;
+     cursor: pointer;
+     font-weight: 700;
+     font-size: 1rem;
+     transition: all 0.2s ease;
+     font-family: var(--font-sans);
+ }
+ .user-card button:hover {
+     background: var(--color-terracotta);
+     color: #ffffff;
+     box-shadow: 0 4px 15px rgba(171, 78, 61, 0.2);
+ }
+
+ .fab-xr {
+     position: absolute;
+     top: 1.5rem;
+     right: 2rem;
+     background: var(--color-terracotta);
+     color: white;
+     border: none;
+     width: 140px;
+     height: 48px;
+     border-radius: 30px;
+     font-weight: 800;
+     font-size: 1rem;
+     letter-spacing: 0.5px;
+     text-transform: uppercase;
+     cursor: pointer;
+     box-shadow: 0 8px 25px rgba(171, 78, 61, 0.25);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     gap: 8px;
+     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+     font-family: var(--font-sans);
+ }
+ .fab-xr:hover {
+     transform: scale(1.06) rotate(1.5deg);
+     box-shadow: 0 12px 30px rgba(171, 78, 61, 0.4);
+ }
+
+ .ar-mirror-container {
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   width: 600px;
+   height: 600px;
+   z-index: 10001;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+ }
+
+ .heart-mask-video {
+   width: 400px;
+   height: 400px;
+   object-fit: cover;
+   clip-path: url(#heart-clip);
+   transform: scaleX(-1);
+   z-index: 2;
+   position: absolute;
+ }
+
+ .scenery-overlay {
+   position: absolute;
+   width: 100%;
+   height: 100%;
+   top: 0;
+   left: 0;
+   z-index: 3;
+   pointer-events: none;
+ }
+
+ .creator-settings-section {
+   max-width: 900px;
+   margin: 2rem auto;
+   padding: 2.5rem;
+   background: var(--color-card-bg);
+   border-radius: 28px;
+   border: 3px dashed var(--color-terracotta);
+   box-shadow: 0 12px 40px rgba(171, 78, 61, 0.1);
+   display: none;
+   flex-direction: column;
+   gap: 1.5rem;
+ }
+
+ .creator-grid {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+   gap: 1.5rem;
+ }
+
+ .bonus-option {
+   background: var(--color-cozy-bg);
+   border: 1px solid var(--color-cream-light);
+   padding: 1.25rem;
+   border-radius: 20px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 1rem;
+ }
+
+ .toggle-switch {
+   position: relative;
+   display: inline-block;
+   width: 50px;
+   height: 26px;
+ }
+
+ .toggle-switch input {
+   opacity: 0;
+   width: 0;
+   height: 0;
+ }
+
+ .slider {
+   position: absolute;
+   cursor: pointer;
+   top: 0; left: 0; right: 0; bottom: 0;
+   background-color: var(--color-cream-light);
+   transition: .4s;
+   border-radius: 34px;
+ }
+
+ .slider:before {
+   position: absolute;
+   content: "";
+   height: 18px; width: 18px;
+   left: 4px; bottom: 4px;
+   background-color: white;
+   transition: .4s;
+   border-radius: 50%;
+ }
+
+ input:checked + .slider {
+   background-color: var(--color-sage);
+ }
+
+ input:checked + .slider:before {
+   transform: translateX(24px);
+ }
+ </style>
+</head>
+<body>
+
+ <svg width="0" height="0" style="position:absolute;">
+  <defs>
+    <clipPath id="heart-clip" clipPathUnits="objectBoundingBox">
+      <path d="M0.5,0.21 C0.42,0.02,0.18,-0.06,0.06,0.08 C-0.08,0.25,0.02,0.56,0.5,0.95 C0.98,0.56,1.08,0.25,0.94,0.08 C0.82,-0.06,0.58,0.02,0.5,0.21" />
+    </clipPath>
+  </defs>
+ </svg>
+
+ <div id="loginOverlay" class="modal-overlay" style="display: flex;">
+  <div class="modal-card">
+   <h2 style="margin-bottom: 0.5rem;">Welcome to GrandPal</h2>
+   <p style="color: #6e5c53; margin-bottom: 1.5rem;">Please sign in to access your companion dashboard and AR spaces.</p>
+   
+   <form id="loginForm" onsubmit="return false;">
+    <div class="form-group">
+     <label for="username">Username or Email</label>
+     <input type="text" id="username" value="grandma@heritage.com" required>
+    </div>
+    <div class="form-group">
+     <label for="password">Password</label>
+     <input type="password" id="password" value="grandpal123" required>
+    </div>
+    <button type="submit" id="loginSubmitBtn" class="submit-btn">Sign In to Dashboard</button>
+   </form>
+  </div>
+ </div>
+
+ <header>
+ <div class="header-left">
+   <svg class="header-icon" viewBox="0 0 24 24">
+     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+   </svg>
+   <h1>GrandPal <span id="headerFlag"></span></h1>
+   <span id="premiumBadge" class="premium-badge">Premium Upgrade</span>
+ </div>
+ <div class="header-right">
+ <button id="cultureHubBtn" class="nav-btn culture-nav-btn">Culture Hub</button>
+ <button id="goPremiumBtn" class="nav-btn premium-btn">Go Premium</button>
+ <button id="audioTalkBtn" class="voice-assist-btn">
+   Talk to AI
+ </button>
+ </div>
+ </header>
+
+ <div class="main-content">
+  <div class="tagline">Live a better life—with GrandPal</div>
+
+
+  <div id="creatorSettingsCard" class="creator-settings-section">
+     <h2 style="color: var(--color-terracotta);">Creator Settings and Workshop</h2>
+     <p>Modify local parameters, set custom access codes, and enable specific creator modules.</p>
+     
+     <div class="creator-grid">
+       <div class="form-group">
+         <label for="creatorCustomCode">Custom Creator Code</label>
+         <input type="password" id="creatorCustomCode" value="000000">
+       </div>
+       <div class="form-group">
+         <label for="creatorCustomCardCode">Custom Card Verification Code</label>
+         <input type="text" id="creatorCustomCardCode">
+       </div>
+     </div>
+
+     <div class="creator-grid">
+       <div class="form-group">
+         <label for="creatorCompanionPersona">Companion Persona Mode</label>
+         <select id="creatorCompanionPersona">
+           <option value="warm">Warm Storyteller</option>
+           <option value="guardian">Soft Guardian</option>
+           <option value="neighbor">Cozy Neighbor</option>
+         </select>
+       </div>
+       <div class="form-group">
+         <label for="creatorChatAllocation">Creator Chat Limit Allocation</label>
+         <select id="creatorChatAllocation">
+           <option value="100">Standard (100 Chats)</option>
+           <option value="1000">Creative Enthusiast (1000 Chats)</option>
+           <option value="unlimited">Infinite Creative Mode</option>
+         </select>
+       </div>
+     </div>
+
+     <div class="creator-grid">
+       <div class="bonus-option">
+         <div>
+           <strong style="display: block;">Warm Cabin Theme</strong>
+           <span style="font-size: 0.85rem; color: var(--color-text-muted);">Enable full twilit cocoa aesthetics</span>
+         </div>
+         <label class="toggle-switch">
+           <input type="checkbox" id="bonusThemeToggle">
+           <span class="slider"></span>
+         </label>
+       </div>
+
+       <div class="bonus-option">
+         <div>
+           <strong style="display: block;">Hearth Crackle Sound</strong>
+           <span style="font-size: 0.85rem; color: var(--color-text-muted);">Synthesize procedural fireplace crackles</span>
+         </div>
+         <label class="toggle-switch">
+           <input type="checkbox" id="bonusSoundToggle">
+           <span class="slider"></span>
+         </label>
+       </div>
+     </div>
+
+     <button type="button" id="saveCreatorSettingsBtn" class="submit-btn">Apply Creative Parameters</button>
+  </div>
+
+  <div class="location-card app-card">
+   <span class="location-label">Configure Application Profile:</span>
+   <select id="regionSelect" class="location-select">
+    <option value="" disabled selected>Select Area...</option>
+   </select>
+  </div>
+ 
+  <div id="usageTracker" class="usage-tracker">Daily Chats Remaining: 100 / 100</div>
+
+  <div class="ar-card">
+   <div class="ar-card-header">
+    <div class="ar-info">
+     <h4>Premium AR Visual Aid</h4>
+     <p>Overlay clear guidelines and spatial data cards onto your surrounding environment.</p>
+    </div>
+   </div>
+   <div style="display: flex; align-items: center; gap: 10px; width: 100%;">
+       <select id="arEnvironmentMode" class="location-select" style="flex: 1;">
+           <option value="pill">Standard Mode (Pill Reminder)</option>
+           <option value="moon">Immersive Mode (Vision Pro Moon)</option>
+       </select>
+       <button id="launchArBtn" class="ar-launch-btn">Launch AR Space</button>
+   </div>
+  </div>
+
+  <div id="notificationBanner" class="notification-banner" style="display:none;">
+   <span>New message from your family – reading aloud now...</span>
+  </div>
+
+  <div class="status-card">
+   <span id="aiStatus">Press the button to speak to GrandPal.</span>
+   <span id="aiResponse" class="ai-response-text" style="display: none;"></span>
+  </div>
+ </div>
+
+ <div id="arViewOverlay">
+  <button id="closeArBtn" class="close-ar-btn">Exit AR Space</button>
+
+  <div class="ar-mirror-container">
+    <video id="liveWebcamFeed" class="heart-mask-video" autoplay playsinline muted></video>
+   
+    <svg class="scenery-overlay" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 120 180 L 250 50 L 380 180 L 380 430 L 120 430 Z" fill="none" stroke="#ffb347" stroke-width="8" stroke-dasharray="12 6" opacity="0.9"/>
+      <polygon points="250,20 90,160 410,160" fill="none" stroke="#f9d423" stroke-width="7" opacity="0.95"/>
+      <line x1="250" y1="20" x2="250" y2="430" stroke="#f9d423" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.4"/>
+      <line x1="90" y1="160" x2="410" y2="160" stroke="#f9d423" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.4"/>
+     
+      <g transform="translate(45, 340) scale(0.65)">
+        <circle cx="40" cy="40" r="22" fill="#ff7675" />
+        <rect x="28" y="62" width="24" height="42" rx="6" fill="#74b9ff" />
+        <line x1="18" y1="78" x2="38" y2="68" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" />
+        <line x1="62" y1="78" x2="42" y2="68" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" />
+        <line x1="33" y1="104" x2="22" y2="135" stroke="#74b9ff" stroke-width="4.5" />
+        <line x1="47" y1="104" x2="58" y2="135" stroke="#74b9ff" stroke-width="4.5" />
+        <path d="M 50 25 C 60 15, 75 15, 80 25 C 85 15, 100 15, 110 25 C 110 40, 80 60, 80 60 C 80 60, 50 40, 50 25 Z" fill="#ff7675" opacity="0.9"/>
+        <path d="M 12 72 Q 5 62 10 52 Q 22 55 18 78 Z" fill="#74b9ff" opacity="0.95"/>
+      </g>
+
+      <g transform="translate(385, 340) scale(0.65) scaleX(-1)">
+        <circle cx="40" cy="40" r="20" fill="#ff7675" />
+        <rect x="28" y="60" width="24" height="44" rx="6" fill="#a29bfe" />
+        <line x1="18" y1="78" x2="38" y2="68" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" />
+        <line x1="62" y1="78" x2="42" y2="68" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" />
+        <line x1="33" y1="104" x2="22" y2="135" stroke="#a29bfe" stroke-width="4.5" />
+        <line x1="47" y1="104" x2="58" y2="135" stroke="#a29bfe" stroke-width="4.5" />
+        <path d="M 50 25 C 60 15, 75 15, 80 25 C 85 15, 100 15, 110 25 C 110 40, 80 60, 80 60 C 80 60, 50 40, 50 25 Z" fill="#ff7675" opacity="0.9"/>
+        <path d="M 12 72 Q 5 62 10 52 Q 22 55 18 78 Z" fill="#a29bfe" opacity="0.95"/>
+      </g>
+
+      <path d="M 230 460 C 240 450, 255 450, 260 460 C 265 450, 280 450, 290 460 C 290 475, 260 495, 260 495 C 260 495, 230 475, 230 460 Z" fill="#ff7675" opacity="0.8"/>
+      <path d="M 50 120 C 60 110, 75 110, 80 120 C 85 110, 100 110, 110 120 C 110 135, 80 155, 80 155 C 80 155, 50 135, 50 120 Z" fill="#ff7675" opacity="0.6"/>
+      <path d="M 390 120 C 400 110, 415 110, 420 120 C 425 110, 440 110, 450 120 C 450 135, 420 155, 420 155 C 420 155, 390 135, 390 120 Z" fill="#ff7675" opacity="0.6"/>
+    </svg>
+  </div>
+ 
+  <a-scene embedded pure-vr="true">
+   <a-assets>
+    <img id="moon-pano" src="https://raw.githubusercontent.com/aframevr/sample-assets/master/assets/images/space/earth_atmos_4096.jpg" crossorigin="anonymous">
+   </a-assets>
+
+   <a-entity camera look-controls wasd-controls position="0 1.6 0">
+   
+    <a-entity id="pillReminderModel" position="0 -0.4 -2" visible="true">
+     <a-sphere position="0 0.6 0" radius="0.14" material="color: #ffdbac;"></a-sphere>
+     <a-cylinder position="0 0.1 0" radius="0.16" height="0.6" material="color: #3a7bd5;"></a-cylinder>
+     <a-plane position="0 1.25 0.02" width="1.6" height="0.7" material="color: #ffffff; opacity: 0.95; shader: flat; side: double;"></a-plane>
+     <a-text id="arTitleText" value="TODAY'S GOALS:" position="-0.7 1.45 0.05" color="#1a1a2e" width="3.2" wrap-count="20"></a-text>
+     <a-text id="arBodyText" value="1. Take Blue Pill\n2. Drink Water" position="-0.7 1.2 0.05" color="#2b5fb0" width="2.8" wrap-count="22"></a-text>
+    </a-entity>
+
+    <a-entity id="moonEnvironmentModel" position="0 0 0" visible="false">
+      <a-sky color="#000000"></a-sky>
+      <a-light type="directional" position="-1 0.5 1" intensity="1.5" color="#fffaf0"></a-light>
+      <a-light type="ambient" intensity="0.2" color="#ffffff"></a-light>
+      <a-plane position="0 -2 0" rotation="-90 0 0" width="200" height="200" material="color: #aaaaaa; roughness: 1; src: https://upload.wikimedia.org/wikipedia/commons/d/db/Moonmap_from_clementine_data.png; repeat: 20 20"></a-plane>
+    </a-entity>
+ 
+    <a-entity id="heritageArModel" position="0 -0.5 -3" visible="false">
+        <a-cylinder position="0 0 0" radius="1.2" height="0.2" material="color: #8b0000;"></a-cylinder>
+        <a-cylinder position="0 0.2 0" radius="1.0" height="0.2" material="color: #cd5c5c;"></a-cylinder>
+        <a-cylinder position="0 0.8 0" radius="0.8" height="1.0" material="color: #f5deb3;"></a-cylinder>
+        <a-cone position="0 1.5 0" radius-bottom="1.4" radius-top="0" height="0.6" material="color: #8b0000;"></a-cone>
+        <a-text value="TEMPLE OF HEAVEN" position="-0.8 2.0 0" color="#ffffff" width="4"></a-text>
+    </a-entity>
+
+   </a-entity>
+  </a-scene>
+ </div>
+
+ <div id="paymentModal" class="modal-overlay">
+  <div class="modal-card">
+   <button id="closeModalBtn" class="close-modal">&times;</button>
+   <h3>Upgrade to Premium</h3>
+   <p style="margin-bottom: 1.5rem;">Get unlimited daily chat volume, priority response pacing, full access to Augmented Reality visual aids, unlimited AI messages and the upcoming <strong>VR Split-Screen Hardware Bundle</strong>.</p>
+   
+   <form id="paymentForm" onsubmit="return false;">
+    <div class="form-group">
+      <label for="pmntCardNum">16-Digit Premium Card Code</label>
+      <input id="pmntCardNum" type="text" placeholder="XXXX XXXX XXXX XXXX" required>
+    </div>
+    <div id="paymentFeedback" style="color: var(--color-terracotta); font-weight: 700; font-size: 0.95rem; margin-bottom: 1rem; display: none;"></div>
+    <button type="submit" class="submit-btn pay-submit-btn">Verify and Unlock Premium</button>
+   </form>
+
+   <form id="creatorForm" onsubmit="return false;" style="display: none;">
+    <div class="form-group">
+      <label for="pmntCreatorCode">6-Digit Creator Code</label>
+      <input id="pmntCreatorCode" type="password" maxlength="6" placeholder="Enter creator code" required>
+    </div>
+    <div id="creatorFeedback" style="color: var(--color-terracotta); font-weight: 700; font-size: 0.95rem; margin-bottom: 1rem; display: none;"></div>
+    <div style="display: flex; gap: 1rem;">
+      <button type="button" id="backToPaymentBtn" class="submit-btn" style="background: var(--color-cream-light); color: var(--color-text-dark); box-shadow: none;">Back</button>
+      <button type="submit" class="submit-btn pay-submit-btn">Verify Creator Code</button>
+    </div>
+   </form>
+
+   <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--color-cream-light);">
+      <span id="creatorLink" style="font-size: 0.9rem; font-weight: 700; color: var(--color-text-muted); cursor: pointer; text-decoration: underline;">Creator?</span>
+   </div>
+  </div>
+ </div>
+
+ <div id="onboardingModal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 500px;">
+        <button id="closeOnboardingBtn" class="close-modal">&times;</button>
+       
+        <div id="onboardStep1" class="onboarding-step active">
+            <h3>Welcome to the Community</h3>
+            <p>What cultures do you identify with, represent, or want to share? (Select primary)</p>
+            <select id="cultureSelect" class="form-group input" style="width: 100%; padding: 0.8rem; border-radius: 12px; margin-bottom: 1rem;">
+                <option value="Chinese Culture">Chinese Culture</option>
+                <option value="Italian Culture">Italian Culture</option>
+                <option value="Mexican Culture">Mexican Culture</option>
+                <option value="Indian Culture">Indian Culture</option>
+                <option value="Nigerian Culture">Nigerian Culture</option>
+                <option value="Japanese Culture">Japanese Culture</option>
+            </select>
+            <div class="onboarding-controls" style="justify-content: flex-end;">
+                <button class="pay-submit-btn" style="width: auto; margin-top:0;" onclick="nextStep(2)">Next: Hobbies</button>
+            </div>
+        </div>
+
+        <div id="onboardStep2" class="onboarding-step">
+            <h3>Hobbies and Interests</h3>
+            <p>Select the tags that best describe your interests to help us match you.</p>
+            <div class="hobby-grid" id="hobbyGrid">
+                <span class="hobby-tag" onclick="toggleHobby(this)">Cooking</span>
+                <span class="hobby-tag" onclick="toggleHobby(this)">Calligraphy</span>
+                <span class="hobby-tag" onclick="toggleHobby(this)">History</span>
+                <span class="hobby-tag" onclick="toggleHobby(this)">Gaming</span>
+                <span class="hobby-tag" onclick="toggleHobby(this)">Anime</span>
+                <span class="hobby-tag" onclick="toggleHobby(this)">Architecture</span>
+                <span class="hobby-tag" onclick="toggleHobby(this)">Traditional Music</span>
+            </div>
+            <div class="onboarding-controls">
+                <button class="btn-secondary" onclick="nextStep(1)">Back</button>
+                <button class="pay-submit-btn" style="width: auto; margin-top:0;" onclick="nextStep(3)">Next: Location</button>
+            </div>
+        </div>
+
+        <div id="onboardStep3" class="onboarding-step">
+            <h3>Location Access</h3>
+            <p>We need your location to place you on the community map and find nearby enthusiasts.</p>
+            <div class="onboarding-controls">
+                <button class="btn-secondary" onclick="nextStep(2)">Back</button>
+                <button class="pay-submit-btn" style="width: auto; margin-top:0;" onclick="finishOnboarding()">Allow and Enter Hub</button>
+            </div>
+        </div>
+    </div>
+ </div>
+
+ <div id="culturalMapScreen">
+    <button class="nav-btn close-map-btn" onclick="closeMap()">Exit Hub</button>
+    <div class="tagline" style="color: #2d1a11; position: absolute; top: 30px; left: 30px; margin: 0; text-shadow: 0 1px 2px rgba(255,255,255,0.8);">Global Cultural Hub</div>
+   
+    <div class="floating-pin pin-china" onclick="openDrawer('Chinese', 'Chinese Heritage', 'Xiu')">China Hub</div>
+    <div class="floating-pin pin-italy" onclick="openDrawer('Italian', 'Italian Heritage', 'Marco')">Italy Hub</div>
+    <div class="floating-pin pin-mexico" onclick="openDrawer('Mexican', 'Mexican Heritage', 'Elena')">Mexico Hub</div>
+    <div class="floating-pin pin-india" onclick="openDrawer('Indian', 'Indian Heritage', 'Aditya')">India Hub</div>
+    <div class="floating-pin pin-nigeria" onclick="openDrawer('Nigerian', 'Nigerian Heritage', 'Chidi')">Nigeria Hub</div>
+    <div class="floating-pin pin-japan" onclick="openDrawer('Japanese', 'Japanese Heritage', 'Yuki')">Japan Hub</div>
+ </div>
+
+ <div id="culturalDrawer" class="cultural-drawer">
+    <div class="drawer-header">
+        <h2 id="drawerTitle">Chinese Culture Hub</h2>
+        <button class="close-modal" style="position: relative; top: 0; right: 0; background:none; border:none; font-size:1.5rem; cursor:pointer;" onclick="closeDrawer()">&times;</button>
+    </div>
+   
+    <button class="fab-xr" onclick="launchHeritageAR()" title="Launch VR/AR Heritage Monument">View XR</button>
+
+    <div class="ambassador-section">
+        <h3 style="margin-bottom: 1rem; color: #1a1a2e;" id="ambassadorChatHeader">Chat with Xiu (AI Ambassador)</h3>
+        <p style="font-size: 0.85rem; color: #b45f06; margin-bottom: 1rem;" id="aiMessageTracker">Free Tier: 5 AI messages remaining today.</p>
+        <div class="chat-window" id="ambassadorChat">
+            <div class="chat-msg msg-ai" id="ambassadorInitialGreeting">Hello! I am Xiu. I'd love to share history, food recipes, and traditions with you. What would you like to know?</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="ambassadorInput" placeholder="Ask about history, food...">
+            <button onclick="sendAmbassadorMessage()">Send</button>
+        </div>
+    </div>
+
+    <div class="community-section">
+        <h3>Local Community Matches (within 10 miles)</h3>
+        <p style="font-size: 0.85rem; color: #b45f06; margin-bottom: 1rem;" id="matchTracker">Free Tier: Showing 3 local matches. Upgrade for Global.</p>
+        <div class="community-scroll" id="communityScroll">
+        </div>
+    </div>
+ </div>
+
+ <div class="caregiver-section">
+  <h2>Caregiver or Family Portal</h2>
+  <p>Type daily goals, reminder checklists, or warm family notes below. When you send it, GrandPal will read the entire block out loud and update the physical speech bubble board inside A-Frame VR/AR spaces.</p>
+  <textarea id="todoInput" placeholder="Enter reminders..."></textarea>
+  <button id="sendListBtn" class="submit-btn" style="width: auto; padding: 0.8rem 2rem;">Send to Senior</button>
+ </div>
+
+ <footer>Welcome to GrandPal, hope you have a nice stay with us.</footer>
+
+ <script>
+ const GEMINI_API_KEY = "AIzaSyDyhjSr4oOdV9TL1aZQKuh6bDuMTdhvCgY";
+ const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=" + GEMINI_API_KEY;
+
+ let mediaRecorder;
+ let audioChunks = [];
+ let isRecording = false;
+ let isPremium = false;
+ let isCreatorModeActive = false;
+ let currentCreatorPasscode = "000000";
+ let CHAT_LIMIT = 100;
+ let activeRegion = "";
+ let webcamStream = null;
+ let systemGeneratedCardCode = "";
+ let activePersonaDescription = "gentle voice companion for elderly seniors";
+
+ let audioCtx = null;
+ let audioInterval = null;
+
+ const audioTalkBtn = document.getElementById('audioTalkBtn');
+ const aiStatus = document.getElementById('aiStatus');
+ const aiResponse = document.getElementById('aiResponse');
+ const todoInput = document.getElementById('todoInput');
+ const sendListBtn = document.getElementById('sendListBtn');
+ const notificationBanner = document.getElementById('notificationBanner');
+ const regionSelect = document.getElementById('regionSelect');
+ const headerFlag = document.getElementById('headerFlag');
+ const goPremiumBtn = document.getElementById('goPremiumBtn');
+ const paymentModal = document.getElementById('paymentModal');
+ const closeModalBtn = document.getElementById('closeModalBtn');
+ const paymentForm = document.getElementById('paymentForm');
+ const premiumBadge = document.getElementById('premiumBadge');
+ const usageTracker = document.getElementById('usageTracker');
+ const launchArBtn = document.getElementById('launchArBtn');
+ const arViewOverlay = document.getElementById('arViewOverlay');
+ const closeArBtn = document.getElementById('closeArBtn');
+ const arBodyText = document.getElementById('arBodyText');
+ const liveWebcamFeed = document.getElementById('liveWebcamFeed');
+
+ const loginForm = document.getElementById('loginForm');
+ const loginOverlay = document.getElementById('loginOverlay');
+ 
+ loginForm.addEventListener('submit', (e) => {
+     e.preventDefault();
+     loginOverlay.style.display = 'none';
+ });
+
+ const flags = {
+ "United States": "USA", "United Kingdom": "UK", "China": "CHN", "Japan": "JPN", "Mexico": "MEX", "Italy": "ITA", "India": "IND", "Nigeria": "NGA"
+ };
+
+ function initializeCountryDropdown() {
+     const sortedCountries = Object.keys(flags).sort();
+     sortedCountries.forEach(country => {
+         const option = document.createElement('option');
+         option.value = country;
+         option.textContent = country + " (" + flags[country] + ")";
+         regionSelect.appendChild(option);
+     });
+ }
+ initializeCountryDropdown();
+
+ regionSelect.addEventListener('change', () => {
+     activeRegion = regionSelect.value;
+     headerFlag.textContent = "(" + flags[activeRegion] + ")";
+     aiStatus.textContent = "Profile customized to " + activeRegion + " successfully!";
+     aiResponse.style.display = 'none';
+ });
+
+ function getTodayDateString() {
+     const today = new Date();
+     return today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+ }
+
+ function getDailyUsageCount() {
+     const activeDate = getTodayDateString();
+     const savedDate = localStorage.getItem('grandpal_usage_date');
+     
+     if (savedDate !== activeDate) {
+         localStorage.setItem('grandpal_usage_date', activeDate);
+         localStorage.setItem('grandpal_usage_count', '0');
+         return 0;
+     }
+     
+     const count = localStorage.getItem('grandpal_usage_count');
+     return count ? parseInt(count, 10) : 0;
+ }
+
+ function incrementUsageCount() {
+     if (isPremium) return;
+     const currentCount = getDailyUsageCount();
+     localStorage.setItem('grandpal_usage_count', (currentCount + 1).toString());
+     updateUsageDisplay();
+ }
+
+ function updateUsageDisplay() {
+     if (isPremium) {
+         usageTracker.textContent = "Premium Tier Active";
+         return;
+     }
+     const currentCount = getDailyUsageCount();
+     const remaining = Math.max(0, CHAT_LIMIT - currentCount);
+     usageTracker.textContent = "Daily Chats Remaining: " + remaining + " / " + CHAT_LIMIT;
+ }
+ updateUsageDisplay();
+
+ function syncSpeechBubbleWithStorage() {
+     const savedList = localStorage.getItem('grandpal_shared_todo');
+     if (savedList && arBodyText) {
+         const formattedText = savedList.replace(/\. /g, '.\n');
+         arBodyText.setAttribute('value', formattedText);
+     }
+ }
+
+ sendListBtn.addEventListener('click', () => {
+     const listText = todoInput.value.trim();
+     if (!listText) return;
+     localStorage.setItem('grandpal_shared_todo', listText);
+     todoInput.value = "";
+     
+     notificationBanner.style.display = 'flex';
+     aiStatus.textContent = "GrandPal is reading an important note from your family... ";
+     aiResponse.style.display = 'none';
+     
+     if(arBodyText) arBodyText.setAttribute('value', listText.replace(/\. /g, '.\n'));
+
+     let instructionContext = "You are GrandPal, a loving voice companion. Read this list aloud warmly: " + listText;
+     sendTextToGemini(instructionContext);
+ });
+
+ function generateRandom16DigitCode() {
+     let segments = [];
+     for (let s = 0; s < 4; s++) {
+         let value = "";
+         for (let d = 0; d < 4; d++) {
+             value += Math.floor(Math.random() * 10).toString();
+         }
+         segments.push(value);
+     }
+     return segments.join(" ");
+ }
+
+ function initializePremiumModal() {
+     if (!systemGeneratedCardCode) {
+         systemGeneratedCardCode = generateRandom16DigitCode();
+         document.getElementById('creatorCustomCardCode').value = systemGeneratedCardCode;
+     }
+ }
+ initializePremiumModal();
+
+ goPremiumBtn.addEventListener('click', () => {
+     initializePremiumModal();
+     document.getElementById('paymentFeedback').style.display = 'none';
+     document.getElementById('creatorFeedback').style.display = 'none';
+     document.getElementById('paymentForm').style.display = 'block';
+     document.getElementById('creatorForm').style.display = 'none';
+     document.getElementById('creatorLink').style.display = 'inline-block';
+     paymentModal.style.display = 'flex';
+ });
+ 
+ closeModalBtn.addEventListener('click', () => paymentModal.style.display = 'none');
+
+ document.getElementById('creatorLink').addEventListener('click', () => {
+     document.getElementById('paymentForm').style.display = 'none';
+     document.getElementById('creatorForm').style.display = 'block';
+     document.getElementById('creatorLink').style.display = 'none';
+     document.getElementById('pmntCreatorCode').value = '';
+     document.getElementById('creatorFeedback').style.display = 'none';
+ });
+
+ document.getElementById('backToPaymentBtn').addEventListener('click', () => {
+     document.getElementById('paymentForm').style.display = 'block';
+     document.getElementById('creatorForm').style.display = 'none';
+     document.getElementById('creatorLink').style.display = 'inline-block';
+     document.getElementById('paymentFeedback').style.display = 'none';
+ });
+ 
+ paymentForm.addEventListener('submit', (e) => {
+     e.preventDefault();
+     const enteredCardNum = document.getElementById('pmntCardNum').value.replace(/\s+/g, '');
+     const cleanSystemCode = systemGeneratedCardCode.replace(/\s+/g, '');
+     const feedbackEl = document.getElementById('paymentFeedback');
+
+     if (enteredCardNum === cleanSystemCode) {
+         isPremium = true;
+         paymentModal.style.display = 'none';
+         goPremiumBtn.style.display = 'none';
+         premiumBadge.style.display = 'inline-block';
+         updateUsageDisplay();
+         updateMonetizationTrackers();
+     } else {
+         feedbackEl.textContent = "Payment verification failed. Invalid card code details. Please try again.";
+         feedbackEl.style.display = 'block';
+     }
+ });
+
+ document.getElementById('creatorForm').addEventListener('submit', (e) => {
+     e.preventDefault();
+     const enteredCreatorCode = document.getElementById('pmntCreatorCode').value.trim();
+     
+     if (enteredCreatorCode === currentCreatorPasscode) {
+         isPremium = true;
+         isCreatorModeActive = true;
+         paymentModal.style.display = 'none';
+         goPremiumBtn.style.display = 'none';
+         premiumBadge.style.display = 'inline-block';
+         updateUsageDisplay();
+         updateMonetizationTrackers();
+         revealCreatorPanel();
+         alert("Creator code accepted! Welcome back!");
+     } else {
+         alert("Invalid creator code! Returning to original premium subscription page.");
+         document.getElementById('paymentForm').style.display = 'block';
+         document.getElementById('creatorForm').style.display = 'none';
+         document.getElementById('creatorLink').style.display = 'inline-block';
+         document.getElementById('paymentFeedback').textContent = "Creator authentication failed. Returning to standard payment portal.";
+         document.getElementById('paymentFeedback').style.display = 'block';
+     }
+ });
+
+ function revealCreatorPanel() {
+     document.getElementById('creatorSettingsCard').style.display = 'flex';
+ }
+
+ document.getElementById('saveCreatorSettingsBtn').addEventListener('click', () => {
+     currentCreatorPasscode = document.getElementById('creatorCustomCode').value.trim() || "000000";
+     systemGeneratedCardCode = document.getElementById('creatorCustomCardCode').value.trim() || generateRandom16DigitCode();
+     
+     const persona = document.getElementById('creatorCompanionPersona').value;
+     if (persona === 'warm') {
+         activePersonaDescription = "warm companion and wise traditional storyteller";
+     } else if (persona === 'guardian') {
+         activePersonaDescription = "loving protective companion and soft guardian";
+     } else {
+         activePersonaDescription = "neighborly companion, a cozy helpful friend next door";
+     }
+
+     const chatLimitAlloc = document.getElementById('creatorChatAllocation').value;
+     if (chatLimitAlloc === 'unlimited') {
+         CHAT_LIMIT = 999999;
+         isPremium = true;
+     } else {
+         CHAT_LIMIT = parseInt(chatLimitAlloc, 10);
+     }
+     updateUsageDisplay();
+
+     const themeEnabled = document.getElementById('bonusThemeToggle').checked;
+     if (themeEnabled) {
+         document.body.classList.add('cabin-theme');
+     } else {
+         document.body.classList.remove('cabin-theme');
+     }
+
+     const soundEnabled = document.getElementById('bonusSoundToggle').checked;
+     if (soundEnabled) {
+         startHearthSound();
+     } else {
+         stopHearthSound();
+     }
+
+     alert("Creative parameters deployed successfully!");
+ });
+
+ function startHearthSound() {
+     if (audioCtx) return;
+     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+     
+     let bufferSize = audioCtx.sampleRate * 2;
+     let noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+     let output = noiseBuffer.getChannelData(0);
+     for (let i = 0; i < bufferSize; i++) {
+         output[i] = Math.random() * 2 - 1;
+     }
+
+     let whiteNoise = audioCtx.createBufferSource();
+     whiteNoise.buffer = noiseBuffer;
+     whiteNoise.loop = true;
+
+     let lowpass = audioCtx.createBiquadFilter();
+     lowpass.type = 'lowpass';
+     lowpass.frequency.value = 350;
+
+     let gainNode = audioCtx.createGain();
+     gainNode.gain.value = 0.08;
+
+     whiteNoise.connect(lowpass);
+     lowpass.connect(gainNode);
+     gainNode.connect(audioCtx.destination);
+     whiteNoise.start();
+
+     audioInterval = setInterval(() => {
+         if (Math.random() < 0.3) {
+             let osc = audioCtx.createOscillator();
+             let popGain = audioCtx.createGain();
+             
+             osc.type = 'triangle';
+             osc.frequency.setValueAtTime(80 + Math.random() * 120, audioCtx.currentTime);
+             osc.frequency.exponentialRampToValueAtTime(10, audioCtx.currentTime + 0.08);
+             
+             popGain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+             popGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+             
+             osc.connect(popGain);
+             popGain.connect(audioCtx.destination);
+             osc.start();
+             osc.stop(audioCtx.currentTime + 0.1);
+         }
+     }, 150);
+
+     window.activeHearthNodes = { noise: whiteNoise, interval: audioInterval };
+ }
+
+ function stopHearthSound() {
+     if (!audioCtx) return;
+     try {
+         if (window.activeHearthNodes) {
+             window.activeHearthNodes.noise.stop();
+             clearInterval(window.activeHearthNodes.interval);
+         }
+         audioCtx.close();
+     } catch (e) {}
+     audioCtx = null;
+     audioInterval = null;
+ }
+
+ function hideAllARModels() {
+     document.getElementById('pillReminderModel').setAttribute('visible', 'false');
+     document.getElementById('moonEnvironmentModel').setAttribute('visible', 'false');
+     document.getElementById('heritageArModel').setAttribute('visible', 'false');
+ }
+
+ launchArBtn.addEventListener('click', async () => {
+     if (!isPremium) {
+         paymentModal.style.display = 'flex';
+         return;
+     }
+     hideAllARModels();
+     const selectedMode = document.getElementById('arEnvironmentMode').value;
+     if (selectedMode === 'pill') {
+         document.getElementById('pillReminderModel').setAttribute('visible', 'true');
+     } else if (selectedMode === 'moon') {
+         document.getElementById('moonEnvironmentModel').setAttribute('visible', 'true');
+     }
+     syncSpeechBubbleWithStorage();
+     
+     try {
+         webcamStream = await navigator.mediaDevices.getUserMedia({ video: { width: 480, height: 480 } });
+         liveWebcamFeed.srcObject = webcamStream;
+     } catch (err) {
+         console.error(err);
+     }
+
+     arViewOverlay.style.display = 'block';
+     window.dispatchEvent(new Event('resize'));
+ });
+
+ closeArBtn.addEventListener('click', () => {
+     if (webcamStream) {
+         webcamStream.getTracks().forEach(track => track.stop());
+         webcamStream = null;
+     }
+     arViewOverlay.style.display = 'none';
+ });
+
+ async function sendTextToGemini(promptText) {
+     if (!GEMINI_API_KEY) return;
+     try {
+         const response = await fetch(GEMINI_URL, {
+             method: "POST", headers: { "Content-Type": "application/json" },
+             body: JSON.stringify({ contents: [{ parts: [{ text: promptText }] }] })
+         });
+         const data = await response.json();
+         const reply = data.candidates[0].content.parts[0].text;
+         aiStatus.textContent = "GrandPal says:";
+         aiResponse.style.display = 'block';
+         aiResponse.textContent = reply;
+         speakText(reply);
+     } catch (err) { console.error(err); }
+ }
+
+ audioTalkBtn.addEventListener('click', async () => {
+     if (!isPremium && getDailyUsageCount() >= CHAT_LIMIT) {
+         aiStatus.textContent = "Daily Chat Limit Reached";
+         return;
+     }
+     if (!isRecording) {
+         audioChunks = [];
+         aiResponse.style.display = 'none';
+         notificationBanner.style.display = 'none';
+         try {
+             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+             const mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 'audio/ogg';
+             mediaRecorder = new MediaRecorder(stream, { mimeType });
+
+             mediaRecorder.ondataavailable = (event) => { if (event.data.size > 0) audioChunks.push(event.data); };
+             mediaRecorder.onstop = () => {
+                 const audioBlob = new Blob(audioChunks, { type: mimeType });
+                 aiStatus.textContent = "Processing your voice...";
+                 const reader = new FileReader();
+                 reader.readAsDataURL(audioBlob);
+                 reader.onloadend = () => sendAudioToGemini(reader.result.split(',')[1], mimeType);
+             };
+             mediaRecorder.start();
+             isRecording = true;
+             audioTalkBtn.innerHTML = 'Stop Speaking';
+             audioTalkBtn.classList.add('recording');
+             aiStatus.textContent = "Listening...";
+         } catch (err) { console.error("Mic error", err); }
+     } else {
+         mediaRecorder.stop();
+         mediaRecorder.stream.getTracks().forEach(track => track.stop());
+         isRecording = false;
+         audioTalkBtn.innerHTML = 'Talk to AI';
+         audioTalkBtn.classList.remove('recording');
+     }
+ });
+
+ async function sendAudioToGemini(base64Audio, mimeType) {
+     if (!GEMINI_API_KEY) return;
+     let promptText = "You are GrandPal, a " + activePersonaDescription;
+     if(activeRegion) promptText += " The region is " + activeRegion;
+     const payload = { contents: [{ parts: [ { inlineData: { mimeType: mimeType, data: base64Audio } }, { text: promptText } ] }] };
+
+     try {
+         const response = await fetch(GEMINI_URL, {
+             method: "POST", headers: { "Content-Type": "application/json" },
+             body: JSON.stringify(payload)
+         });
+         const data = await response.json();
+         const reply = data.candidates[0].content.parts[0].text;
+         incrementUsageCount();
+         aiStatus.textContent = "GrandPal says:";
+         aiResponse.style.display = 'block';
+         aiResponse.textContent = reply;
+         speakText(reply);
+     } catch (err) { console.error(err); }
+ }
+ 
+ function speakText(text) {
+     window.speechSynthesis.cancel();
+     const utterance = new SpeechSynthesisUtterance(text);
+     utterance.rate = 0.9;
+     window.speechSynthesis.speak(utterance);
+ }
+
+ const cultureHubBtn = document.getElementById('cultureHubBtn');
+ const onboardingModal = document.getElementById('onboardingModal');
+ const closeOnboardingBtn = document.getElementById('closeOnboardingBtn');
+
+ cultureHubBtn.addEventListener('click', () => { onboardingModal.style.display = 'flex'; });
+ closeOnboardingBtn.addEventListener('click', () => { onboardingModal.style.display = 'none'; });
+
+ function toggleHobby(element) { element.classList.toggle('selected'); }
+ function nextStep(stepNumber) {
+    document.querySelectorAll('.onboarding-step').forEach(el => el.classList.remove('active'));
+    document.getElementById("onboardStep" + stepNumber).classList.add('active');
+ }
+ function finishOnboarding() {
+    onboardingModal.style.display = 'none';
+    openMap();
+ }
+
+ const mapScreen = document.getElementById('culturalMapScreen');
+ function openMap() { mapScreen.style.display = 'block'; }
+ function closeMap() { mapScreen.style.display = 'none'; }
+
+ const culturalDrawer = document.getElementById('culturalDrawer');
+ const drawerTitle = document.getElementById('drawerTitle');
+ let currentCultureContext = "Chinese Culture";
+ let activeAmbassador = "Xiu";
+
+ const communityDatabase = {
+     "Chinese": [
+         { name: "Li Wei", badge: "Native", shared: "Cooking, History", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150" },
+         { name: "Sarah Jenkins", badge: "Enthusiast", shared: "Calligraphy, Gaming", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150" },
+         { name: "David Chen", badge: "Native", shared: "Architecture, Anime", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150" }
+     ],
+     "Italian": [
+         { name: "Giovanni Rossi", badge: "Native", shared: "Cooking, Architecture", img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150" },
+         { name: "Emily Moretti", badge: "Enthusiast", shared: "Traditional Music", img: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150" }
+     ],
+     "Mexican": [
+         { name: "Carlos Santana", badge: "Native", shared: "Cooking, Traditional Music", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150" },
+         { name: "Sofia Gomez", badge: "Native", shared: "History, Calligraphy", img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150" }
+     ],
+     "Indian": [
+         { name: "Rajesh Patel", badge: "Native", shared: "History, Architecture", img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150" },
+         { name: "Aarav Sharma", badge: "Native", shared: "Traditional Music, Gaming", img: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=150" }
+     ],
+     "Nigerian": [
+         { name: "Olumide Adebayo", badge: "Native", shared: "Cooking, Calligraphy", img: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150" },
+         { name: "Chinwe Egwu", badge: "Enthusiast", shared: "Traditional Music, History", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" }
+     ],
+     "Japanese": [
+         { name: "Takeshi Sato", badge: "Native", shared: "Anime, Calligraphy", img: "https://images.unsplash.com/photo-1500048993953-d23a436266cf?w=150" },
+         { name: "Hana Tanaka", badge: "Native", shared: "History, Architecture", img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150" }
+     ]
+ };
+
+ function openDrawer(cultureName, descriptiveText, ambassadorName) {
+    currentCultureContext = cultureName + " Culture";
+    activeAmbassador = ambassadorName;
+    drawerTitle.textContent = descriptiveText;
+    document.getElementById("ambassadorChatHeader").textContent = "Chat with " + ambassadorName + " (AI Ambassador)";
+    document.getElementById("ambassadorInitialGreeting").textContent = "Hello! I am " + ambassadorName + ". I'd love to share history, food recipes, and traditions of our " + cultureName + " heritage with you. What would you like to know?";
+   
+    const container = document.getElementById("communityScroll");
+    container.innerHTML = "";
+   
+    const matches = communityDatabase[cultureName] || [];
+    matches.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "user-card";
+        card.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
+                <img src="${item.img}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" alt="${item.name}">
+                <div style="display: flex; flex-direction: column;">
+                    <strong>${item.name}</strong>
+                    <span class="badge">${item.badge}</span>
+                </div>
+            </div>
+            <span class="hobbies">Shared Hobbies: ${item.shared}</span>
+            <button onclick="startInstantChat('${item.name}')">Chat 1-on-1</button>
+        `;
+        container.appendChild(card);
+    });
+
+    culturalDrawer.classList.add('open');
+ }
+
+ function startInstantChat(name) {
+     alert("Connecting live 1-on-1 Firestore connection with " + name + ". Send them a friendly wave!");
+ }
+
+ function closeDrawer() { culturalDrawer.classList.remove('open'); }
+
+ let ambassadorMsgCount = 0;
+ const FREE_AMBASSADOR_LIMIT = 5;
+
+ function updateMonetizationTrackers() {
+     if(isPremium) {
+         document.getElementById('aiMessageTracker').textContent = "Premium Tier: Unlimited AI Ambassador Messages.";
+         document.getElementById('matchTracker').textContent = "Premium Tier: Showing Global Matches.";
+     }
+ }
+
+ async function sendAmbassadorMessage() {
+     const inputEl = document.getElementById('ambassadorInput');
+     const userMsg = inputEl.value.trim();
+     if(!userMsg) return;
+
+     if (!isPremium && ambassadorMsgCount >= FREE_AMBASSADOR_LIMIT) {
+         alert("You've reached your 5 free AI Ambassador messages for today. Please upgrade to Premium!");
+         paymentModal.style.display = 'flex';
+         return;
+     }
+
+     const chatWindow = document.getElementById('ambassadorChat');
+     const userDiv = document.createElement('div');
+     userDiv.className = 'chat-msg msg-user';
+     userDiv.textContent = userMsg;
+     chatWindow.appendChild(userDiv);
+     inputEl.value = "";
+     chatWindow.scrollTop = chatWindow.scrollHeight;
+
+     if(!isPremium) ambassadorMsgCount++;
+     if(!isPremium) document.getElementById('aiMessageTracker').textContent = "Free Tier: " + Math.max(0, FREE_AMBASSADOR_LIMIT - ambassadorMsgCount) + " AI messages remaining today.";
+
+     if (!GEMINI_API_KEY) {
+         setTimeout(() => {
+             const errDiv = document.createElement('div');
+             errDiv.className = 'chat-msg msg-ai';
+             errDiv.textContent = "(Mock AI) I am " + activeAmbassador + "! I love that you asked me about our traditional heritage. Please insert a real API key in the index.html to receive direct Gemini insights!";
+             chatWindow.appendChild(errDiv);
+             chatWindow.scrollTop = chatWindow.scrollHeight;
+         }, 800);
+         return;
+     }
+
+     const systemPrompt = "You are " + activeAmbassador + ", an AI cultural ambassador for " + currentCultureContext + ". Speak warmly. Answer this: " + userMsg;
+     try {
+         const response = await fetch(GEMINI_URL, {
+             method: "POST", headers: { "Content-Type": "application/json" },
+             body: JSON.stringify({ contents: [{ parts: [{ text: systemPrompt }] }] })
+         });
+         const data = await response.json();
+         const reply = data.candidates[0].content.parts[0].text;
+         const aiDiv = document.createElement('div');
+         aiDiv.className = 'chat-msg msg-ai';
+         aiDiv.textContent = reply;
+         chatWindow.appendChild(aiDiv);
+         chatWindow.scrollTop = chatWindow.scrollHeight;
+     } catch(err) { console.error(err); }
+ }
+
+ function launchHeritageAR() {
+    closeDrawer();
+    closeMap();
+    hideAllARModels();
+    document.getElementById('heritageArModel').setAttribute('visible', 'true');
+    arViewOverlay.style.display = 'block';
+    window.dispatchEvent(new Event('resize'));
+ }
+ </script>
+</body>
+</html>
